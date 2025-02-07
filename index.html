@@ -49,7 +49,7 @@
 <body>
     <div class="container" id="buttonContainer">
         <button class="moveButton">Nhấn vào đây</button>
-        <p id="message">You are so cute</p>
+        <p id="message">You're so cute</p>
         <p id="warning">Bạn chỉ có 1 lần chọn, nếu chọn sai hộp bí ẩn sẽ reset!</p>
     </div>
     
@@ -96,7 +96,7 @@
             button.addEventListener("mouseover", function() {
                 moveButton(this);
             });
-            button.addEventListener("touchstart", function(event) {
+            button.addEventListener("touchmove", function(event) {
                 event.preventDefault();
                 moveButton(this);
             });
