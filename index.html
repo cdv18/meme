@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ẩn nút hiển thị chữ</title>
+    <title>hộp bí mật</title>
     <style>
         body {
             display: flex;
@@ -15,6 +15,7 @@
         }
         .container {
             text-align: center;
+            position: relative;
         }
         button {
             background-color: #007aff;
@@ -24,7 +25,8 @@
             border-radius: 25px;
             padding: 12px 24px;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: background 0.3s ease, transform 0.3s ease;
+            position: absolute;
         }
         button:hover {
             background-color: #005ecb;
@@ -40,13 +42,25 @@
 <body>
     <div class="container">
         <button id="myButton">Nhấn vào đây</button>
-        <p id="message">Không tin</p>
+        <p id="message">You are so cute</p>
     </div>
     
     <script>
-        document.getElementById("myButton").addEventListener("click", function() {
-            this.style.display = "none";
-            document.getElementById("message").style.display = "block";
+        function moveButton(button) {
+            button.style.transform = `translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px)`;
+        }
+
+        const button = document.getElementById("myButton");
+        button.addEventListener("mouseover", function() {
+            moveButton(this);
+        });
+        button.addEventListener("touchstart", function(event) {
+            event.preventDefault(); // Ngăn chặn nhấn
+            moveButton(this);
+        });
+        button.addEventListener("click", function(event) {
+            event.preventDefault(); // Ngăn chặn nhấn
+            moveButton(this);
         });
     </script>
 </body>
