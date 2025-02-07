@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ẩn nút hiển thị chữ</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f5;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+        }
+        button {
+            background-color: #007aff;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background-color: #005ecb;
+        }
+        #message {
+            display: none;
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button id="myButton">Nhấn vào đây</button>
+        <p id="message">Không tin</p>
+    </div>
+    
+    <script>
+        document.getElementById("myButton").addEventListener("click", function() {
+            this.style.display = "none";
+            document.getElementById("message").style.display = "block";
+        });
+    </script>
+</body>
+</html>
