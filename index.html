@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>hộp bí mật</title>
+    <title>Hộp bí ẩn</title>
     <style>
         body {
             display: flex;
@@ -12,6 +12,8 @@
             height: 100vh;
             background-color: #f0f0f5;
             font-family: Arial, sans-serif;
+            position: relative;
+            flex-direction: column;
         }
         .container {
             text-align: center;
@@ -25,43 +27,99 @@
             border-radius: 25px;
             padding: 12px 24px;
             cursor: pointer;
-            transition: background 0.3s ease, transform 0.3s ease;
+            transition: transform 0.3s ease;
             position: absolute;
-        }
-        button:hover {
-            background-color: #005ecb;
         }
         #message {
             display: none;
             font-size: 20px;
             font-weight: bold;
+            color: red;
+            margin-top: 20px;
+        }
+        #warning {
+            display: none;
+            font-size: 20px;
+            font-weight: bold;
             color: #333;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <button id="myButton">Nhấn vào đây</button>
+    <div class="container" id="buttonContainer">
+        <button class="moveButton">Nhấn vào đây</button>
         <p id="message">You are so cute</p>
+        <p id="warning">Bạn chỉ có 1 lần chọn, nếu chọn sai hộp bí ẩn sẽ reset!</p>
     </div>
     
     <script>
+        let buttonCount = 1;
+        let realButtonIndex = -1;
+        let hasAttempted = false;
+
         function moveButton(button) {
             button.style.transform = `translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px)`;
         }
 
-        const button = document.getElementById("myButton");
-        button.addEventListener("mouseover", function() {
-            moveButton(this);
-        });
-        button.addEventListener("touchstart", function(event) {
-            event.preventDefault(); // Ngăn chặn nhấn
-            moveButton(this);
-        });
-        button.addEventListener("click", function(event) {
-            event.preventDefault(); // Ngăn chặn nhấn
-            moveButton(this);
-        });
+        function createNewButton() {
+            if (buttonCount < 4) {
+                const newButton = document.createElement("button");
+                newButton.textContent = "Nhấn vào đây";
+                newButton.classList.add("moveButton");
+                document.getElementById("buttonContainer").appendChild(newButton);
+                addButtonEvents(newButton);
+                buttonCount++;
+                
+                if (buttonCount === 4) {
+                    realButtonIndex = Math.floor(Math.random() * 4);
+                    document.getElementById("warning").style.display = "block";
+                }
+            }
+        }
+
+        function resetGame() {
+            document.querySelectorAll(".moveButton").forEach(btn => btn.remove());
+            document.getElementById("warning").style.display = "none";
+            document.getElementById("message").style.display = "none";
+            buttonCount = 1;
+            realButtonIndex = -1;
+            hasAttempted = false;
+            const newButton = document.createElement("button");
+            newButton.textContent = "Nhấn vào đây";
+            newButton.classList.add("moveButton");
+            document.getElementById("buttonContainer").appendChild(newButton);
+            addButtonEvents(newButton);
+        }
+
+        function addButtonEvents(button) {
+            button.addEventListener("mouseover", function() {
+                moveButton(this);
+            });
+            button.addEventListener("touchstart", function(event) {
+                event.preventDefault();
+                moveButton(this);
+            });
+            button.addEventListener("click", function(event) {
+                event.preventDefault();
+                if (buttonCount < 4) {
+                    moveButton(this);
+                    createNewButton();
+                } else if (!hasAttempted) {
+                    hasAttempted = true;
+                    if (Array.from(document.querySelectorAll('.moveButton')).indexOf(button) === realButtonIndex) {
+                        document.querySelectorAll(".moveButton").forEach(btn => btn.style.display = "none");
+                        document.getElementById("warning").style.display = "none";
+                        document.getElementById("message").style.display = "block";
+                    } else {
+                        alert("Bạn đã chọn sai! Hộp bí ẩn sẽ reset.");
+                        resetGame();
+                    }
+                }
+            });
+        }
+
+        addButtonEvents(document.querySelector(".moveButton"));
     </script>
 </body>
 </html>
